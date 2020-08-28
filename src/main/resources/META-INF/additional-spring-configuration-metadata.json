@@ -1,0 +1,23 @@
+{
+  "properties": [
+    {
+      "name": "profile",
+      "type": "java.lang.String",
+      "description": "Description for profile."
+    },
+    {
+      "name": "procedure.name",
+      "type": "java.lang.String",
+      "description": "Description for procedure.name."
+    },
+    {
+      "name": "procedure.schemaname",
+      "type": "java.lang.String",
+      "description": "Description for procedure.schemaname."
+    },
+    {
+      "name": "date.pattern",
+      "type": "java.lang.String",
+      "description": "Description for date.pattern."
+    }
+  ] }

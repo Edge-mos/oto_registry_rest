@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registry API</title>
+    <link th:href="@{/css/registry.css}" rel="stylesheet">
+</head>
+<body>
+
+    <div class="registry_api_content">
+        <h3>Registry API</h3>
+        <hr class="reg_line">
+        <ul class="main_registry_list">
+            <li><a th:href="@{/admin/registry/}"><p>скачать реестр на дату</p></a></li>
+            <li><a th:href="@{/admin/gzip}"><p>скачать заархивированный файл реестра Gzip</p></a></li>
+            <li><a th:href="@{/admin/zip}"><p>скачать заархивированный файл реестра Zip</p></a></li>
+        </ul>
+    </div>
+
+</body>
+</html>

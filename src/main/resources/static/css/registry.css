@@ -1,0 +1,14 @@
+
+.main_registry_list {
+    color: red;
+}
+
+.registry_api_content .reg_line {
+    margin: 0;
+    width: 40%;
+}
+
+.main_registry_list p{
+    font-size: 18px;
+}
+
