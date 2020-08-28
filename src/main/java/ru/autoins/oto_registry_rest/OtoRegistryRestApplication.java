@@ -115,6 +115,7 @@ public class OtoRegistryRestApplication {
 //            userRepository.persistUser(admin);
 
             //JWT_RC BRANCH
+            //11
 
         };
     }
