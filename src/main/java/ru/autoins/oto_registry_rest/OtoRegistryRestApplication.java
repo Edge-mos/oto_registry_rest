@@ -115,6 +115,7 @@ public class OtoRegistryRestApplication {
 //            userRepository.persistUser(admin);
 
             //DEFAULT BRANCH
+            //second default
 
         };
     }
