@@ -20,8 +20,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
+// ?????
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-    private AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;          // ??????
 
     @Value("${jwt.expiration.time}")
     private int expirationTime;
