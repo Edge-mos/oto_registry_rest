@@ -3,10 +3,7 @@ package ru.autoins.oto_registry_rest.rest.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.autoins.oto_registry_rest.rest.exeptions.WrongDateException;
 import ru.autoins.oto_registry_rest.service.Registry;
 
@@ -18,6 +15,7 @@ import java.time.format.DateTimeParseException;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin
 public class RegistryRestUserController {
 
     protected final Registry service;
