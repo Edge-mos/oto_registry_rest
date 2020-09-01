@@ -1,15 +1,20 @@
 package ru.autoins.oto_registry_rest.security.jwt;
 
 public class LoginViewModel {
-    private String userName;
+    private String username;
     private String password;
 
-    public String getUserName() {
-        return userName;
+    public LoginViewModel() {
+        this.username = "";
+        this.password = "";
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {

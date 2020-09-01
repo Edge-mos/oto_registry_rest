@@ -3,13 +3,13 @@ package ru.autoins.oto_registry_rest.security.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.stereotype.Component;
 import ru.autoins.oto_registry_rest.security.security_utils.SecurityUser;
 
 import javax.servlet.FilterChain;
@@ -19,48 +19,43 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
+import java.util.Optional;
 
-// ?????
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-    private AuthenticationManager authenticationManager;          // ??????
 
-    @Value("${jwt.expiration.time}")
-    private int expirationTime;
+    private final AuthenticationManager authenticationManager;
+    private final JwtProperties jwtProperties;
 
-    @Value("${jwt.secret}")
-    private String secret;
-
-    @Value("${jwt.header.string}")
-    private String headerString;
-
-    @Value("${jwt.token.prefix}")
-    private String tokenPrefix;
-
-    @Autowired
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtProperties jwtProperties) {
         this.authenticationManager = authenticationManager;
+        this.jwtProperties = jwtProperties;
     }
 
     @Override
     // срабатывает при POST request на /login
     // надо передать {"username": "..", "password": ".."} в request body
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+
+        Optional<LoginViewModel> credentials = Optional.empty();
         // берём догин/пароль и маппим их на класс LoginViewModel
-        LoginViewModel credentials = null;
+
         try {
-            credentials = new ObjectMapper().readValue(request.getInputStream(), LoginViewModel.class);
+            credentials = Optional.ofNullable(new ObjectMapper().readValue(request.getInputStream(), LoginViewModel.class));
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         //создаём токен
+        final LoginViewModel loginViewModel = credentials.orElseGet(LoginViewModel::new);
+
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                credentials.getUserName(),
-                credentials.getPassword(),
+                loginViewModel.getUsername(),
+                loginViewModel.getPassword(),
                 new ArrayList<>()
         );
         // верифицируем
-        Authentication auth = this.authenticationManager.authenticate(authenticationToken);
-        return auth;
+        return this.authenticationManager.authenticate(authenticationToken);
 
     }
 
@@ -72,11 +67,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         // создаём токен
         String token = JWT.create()
                 .withSubject(securityUser.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + this.expirationTime))
-                .sign(Algorithm.HMAC512(this.secret.getBytes()));
+                .withExpiresAt(new Date(System.currentTimeMillis() + this.jwtProperties.getExpirationTime()))
+                .sign(Algorithm.HMAC512(this.jwtProperties.getSecret().getBytes()));
 
         // добавляем токен в хедеры
-        response.addHeader(this.headerString, this.tokenPrefix + token);
+        response.addHeader(this.jwtProperties.getHeaderString(), this.jwtProperties.getTokenPrefix().concat(" ").concat(token));
 
     }
 }

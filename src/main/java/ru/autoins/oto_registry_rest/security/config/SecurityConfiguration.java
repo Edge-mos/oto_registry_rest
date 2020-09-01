@@ -10,18 +10,26 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import ru.autoins.oto_registry_rest.security.jwt.JwtAuthenticationFilter;
+import ru.autoins.oto_registry_rest.security.jwt.JwtAuthorizationFilter;
+import ru.autoins.oto_registry_rest.security.jwt.JwtProperties;
 import ru.autoins.oto_registry_rest.security.models.Permission;
 import ru.autoins.oto_registry_rest.security.models.Role;
+import ru.autoins.oto_registry_rest.security.security_dao.UserRepository;
 
 
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
+    private final UserRepository userRepository;
+    private final JwtProperties jwtProperties;
 
     @Autowired
-    public SecurityConfiguration(@Qualifier("userDetailServiceCustom") UserDetailsService userDetailsService) {
+    public SecurityConfiguration(@Qualifier("userDetailServiceCustom") UserDetailsService userDetailsService, UserRepository userRepository, JwtProperties jwtProperties) {
         this.userDetailsService = userDetailsService;
+        this.userRepository = userRepository;
+        this.jwtProperties = jwtProperties;
     }
 
     @Override
@@ -32,16 +40,27 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http    .csrf().disable()
-                .authorizeRequests()                                                          // авторизовать запрос
-                .antMatchers("/").permitAll()
-                .antMatchers("/user/**").hasAnyAuthority(Permission.Permission_desc.READ.name(), Role.Role_desc.USER.name())
-                .antMatchers("/**").hasAnyAuthority(Permission.Permission_desc.WRITE.name(), Role.Role_desc.ADMIN.name())
-                .anyRequest().authenticated()                                                // каждый запрос должен аунтифицирован
-                .and()
+//        http    .csrf().disable()
+//                .authorizeRequests()                                                          // авторизовать запрос
+//                .antMatchers("/").permitAll()
+//                .antMatchers("/user/**").hasAnyAuthority(Permission.Permission_desc.READ.name(), Role.Role_desc.USER.name())
+//                .antMatchers("/**").hasAnyAuthority(Permission.Permission_desc.WRITE.name(), Role.Role_desc.ADMIN.name())
+//                .anyRequest().authenticated()                                                // каждый запрос должен аунтифицирован
+//                .and()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
+//                .httpBasic();
+
+        http
+                .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .httpBasic();
+                .addFilter(new JwtAuthenticationFilter(authenticationManager(), this.jwtProperties))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(), this.jwtProperties, this.userRepository))
+                .authorizeRequests()
+                .antMatchers("/login").permitAll()
+                .antMatchers("/user/**").hasAnyAuthority(Permission.Permission_desc.READ.name(), Role.Role_desc.USER.name())
+                .antMatchers("/**").hasAnyAuthority(Permission.Permission_desc.WRITE.name(), Role.Role_desc.ADMIN.name());
     }
 
 
