@@ -35,11 +35,12 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     }
 
     @Override
+    // Этот метод блокирует запросы в которых нет нужных данных
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         // читаем хедер авторизации, тут должен быть JWT токен
         String header = request.getHeader(this.jwtProperties.getHeaderString());
 
-        // еслив хедере нету Bearer или он пустой - выход
+        // если в хедере нету Bearer или он пустой - выход
         if (header == null || !header.startsWith(this.jwtProperties.getTokenPrefix())) {
             chain.doFilter(request, response);
             return;
@@ -57,10 +58,6 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         String token = request.getHeader(this.jwtProperties.getHeaderString());
 
         if (token != null) {
-
-            System.out.println(token);
-            System.out.println(token.trim());
-
             String userName = JWT.require(Algorithm.HMAC512(this.jwtProperties.getSecret().getBytes()))
                     .build()
                     .verify(token.replace(this.jwtProperties.getTokenPrefix().concat(" "), ""))
@@ -69,8 +66,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 //                final User user = this.userRepository.getUserByName(userName).get();      // ???? ( исправить Optional)
                 final User user = this.userRepository.getUserByName(userName).orElseThrow(() -> new UsernameNotFoundException("User not found! Problem in getUsernamePasswordAuthentication method!"));      // ???? ( исправить Optional)
                 SecurityUser securityUser = new SecurityUser(user);
-                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userName, null, securityUser.getAuthorities());
-                return auth;
+                return new UsernamePasswordAuthenticationToken(userName, null, securityUser.getAuthorities());
             }
             return null;
         }

@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties("jwt")
 public class JwtProperties {
 
-    private int expirationTime;
+    private Long expirationTime;
 
     private String secret;
 
@@ -16,11 +16,11 @@ public class JwtProperties {
     private String tokenPrefix;
 
 
-    public int getExpirationTime() {
+    public Long getExpirationTime() {
         return expirationTime;
     }
 
-    public void setExpirationTime(int expirationTime) {
+    public void setExpirationTime(Long expirationTime) {
         this.expirationTime = expirationTime;
     }
 
