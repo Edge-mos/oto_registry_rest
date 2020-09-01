@@ -3,29 +3,15 @@ package ru.autoins.oto_registry_rest;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
-import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ru.autoins.oto_registry_rest.dao.RegistryProvider;
-import ru.autoins.oto_registry_rest.security.models.Role;
-import ru.autoins.oto_registry_rest.security.models.User;
 import ru.autoins.oto_registry_rest.security.security_dao.RoleRepository;
 import ru.autoins.oto_registry_rest.security.security_dao.UserRepository;
-import ru.autoins.oto_registry_rest.security.security_utils.SecurityUser;
 import ru.autoins.oto_registry_rest.service.Registry;
-
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.Optional;
-import java.util.Set;
-import java.util.zip.GZIPOutputStream;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
+@EnableSwagger2
 public class OtoRegistryRestApplication {
 
     public static void main(String[] args) {

@@ -59,9 +59,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .addFilter(new JwtAuthenticationFilter(this.authenticationManager(), this.jwtProperties))
                 .addFilter(new JwtAuthorizationFilter(this.authenticationManager(), this.jwtProperties, this.userRepository))
                 .authorizeRequests()
-                .antMatchers("/login").permitAll()
+                .antMatchers("/login", "/swagger-ui/", "/v2/api-docs").permitAll()
                 .antMatchers("/user/**").hasAnyAuthority(Permission.Permission_desc.READ.name(), Role.Role_desc.USER.name())
-                .antMatchers("/**").hasAnyAuthority(Permission.Permission_desc.WRITE.name(), Role.Role_desc.ADMIN.name());
+                .antMatchers("/admin/**", "/user/**").hasAnyAuthority(Permission.Permission_desc.WRITE.name(), Role.Role_desc.ADMIN.name());
     }
 
     @Override
