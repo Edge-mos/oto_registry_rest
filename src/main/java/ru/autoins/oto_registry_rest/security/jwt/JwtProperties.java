@@ -1,36 +1,50 @@
 package ru.autoins.oto_registry_rest.security.jwt;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
-@Component
+@Configuration
+@ConfigurationProperties("jwt")
 public class JwtProperties {
 
-    @Value("${jwt.expiration.time}")
     private int expirationTime;
 
-    @Value("${jwt.secret}")
     private String secret;
 
-    @Value("${jwt.header.string}")
     private String headerString;
 
-    @Value("${jwt.token.prefix}")
     private String tokenPrefix;
+
 
     public int getExpirationTime() {
         return expirationTime;
+    }
+
+    public void setExpirationTime(int expirationTime) {
+        this.expirationTime = expirationTime;
     }
 
     public String getSecret() {
         return secret;
     }
 
+    public void setSecret(String secret) {
+        this.secret = secret;
+    }
+
     public String getHeaderString() {
         return headerString;
     }
 
+    public void setHeaderString(String headerString) {
+        this.headerString = headerString;
+    }
+
     public String getTokenPrefix() {
         return tokenPrefix;
+    }
+
+    public void setTokenPrefix(String tokenPrefix) {
+        this.tokenPrefix = tokenPrefix;
     }
 }

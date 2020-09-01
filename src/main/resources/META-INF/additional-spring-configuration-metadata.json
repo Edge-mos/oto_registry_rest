@@ -39,5 +39,20 @@
       "name": "jwt.header.string",
       "type": "java.lang.String",
       "description": "Description for jwt.header.string."
+    },
+    {
+      "name": "jwt.headerString",
+      "type": "java.lang.String",
+      "description": "Description for jwt.headerString."
+    },
+    {
+      "name": "jwt.tokenPrefix",
+      "type": "java.lang.String",
+      "description": "Description for jwt.tokenPrefix."
+    },
+    {
+      "name": "jwt.expirationTime",
+      "type": "java.lang.String",
+      "description": "Description for jwt.expirationTime."
     }
   ] }

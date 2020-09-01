@@ -46,9 +46,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             e.printStackTrace();
         }
 
-        //создаём токен
         final LoginViewModel loginViewModel = credentials.orElseGet(LoginViewModel::new);
 
+        //создаём токен спринга(не JWT)
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 loginViewModel.getUsername(),
                 loginViewModel.getPassword(),

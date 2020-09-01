@@ -63,16 +63,4 @@ public class SecurityUser implements UserDetails {
     private boolean isActive() {
         return !this.user.getStatus().getStatusName().equals(Status.Status_desc.BANNED.name());
     }
-
-//    public static UserDetails convertUser(User user) {
-//        return new org.springframework.security.core.userdetails.User(
-//                user.getUserName(), user.getPassword(),
-//                user.getStatus().equals(Status.ACTIVE),
-//                user.getStatus().equals(Status.ACTIVE),
-//                user.getStatus().equals(Status.ACTIVE),
-//                user.getStatus().equals(Status.ACTIVE),
-//                null
-////                user.getRole().getAuthorities()
-//        );
-//    }
 }
