@@ -3,6 +3,7 @@ package ru.autoins.oto_registry_rest.security.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -55,16 +56,23 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilter(new JwtAuthenticationFilter(authenticationManager(), this.jwtProperties))
-                .addFilter(new JwtAuthorizationFilter(authenticationManager(), this.jwtProperties, this.userRepository))
+                .addFilter(new JwtAuthenticationFilter(this.authenticationManager(), this.jwtProperties))
+                .addFilter(new JwtAuthorizationFilter(this.authenticationManager(), this.jwtProperties, this.userRepository))
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/user/**").hasAnyAuthority(Permission.Permission_desc.READ.name(), Role.Role_desc.USER.name())
                 .antMatchers("/**").hasAnyAuthority(Permission.Permission_desc.WRITE.name(), Role.Role_desc.ADMIN.name());
     }
 
+    @Override
+    @Bean
+    // authenticationManager находится в абстрактном классе WebSecurityConfigurerAdapter, который унаследован
+    protected AuthenticationManager authenticationManager() throws Exception {
+        return super.authenticationManager();
+    }
 
-//    @Override
+
+    //    @Override
 //    @Bean
 //    protected UserDetailsService userDetailsService() {                                // используем сам бин вместо наследования
 //        return new InMemoryUserDetailsManager(
