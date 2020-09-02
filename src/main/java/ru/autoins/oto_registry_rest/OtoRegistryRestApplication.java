@@ -102,6 +102,7 @@ public class OtoRegistryRestApplication {
 
             //JWT_RC BRANCH
             //11
+            // pull to origin commit
 
         };
     }
