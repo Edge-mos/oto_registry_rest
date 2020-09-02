@@ -115,8 +115,7 @@ public class OtoRegistryRestApplication {
 //            userRepository.persistUser(admin);
 
             //MASTER BRANCH
-            //second default
-            // push to origin
+            //Eugene JWT branch
 
         };
     }
