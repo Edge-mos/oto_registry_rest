@@ -9,12 +9,7 @@ import java.util.stream.Stream;
 
 @Entity
 @Table(schema = "registry_security", name = "ROLES_TMP")
-public class Role {
-
-    @Id
-    @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Role extends BaseEntity{
 
     @Column(name = "ROLE_NAME", columnDefinition = "VARCHAR(20) NOT NULL")
     private String roleName;
@@ -30,14 +25,6 @@ public class Role {
     private Set<Permission> listOfPermissions = new HashSet<>();
 
     public Role() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getRoleName() {
@@ -66,7 +53,11 @@ public class Role {
 
     public void setPermissionsById(Number ...id) {
         this.listOfPermissions = Stream.of(id)
-                .map(number -> new Permission(number.longValue()))
+                .map(number -> {
+                    Permission permission = new Permission();
+                    permission.setId(number.longValue());
+                    return permission;
+                })
                 .collect(Collectors.toSet());
     }
 

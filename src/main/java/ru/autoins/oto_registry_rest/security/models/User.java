@@ -7,12 +7,7 @@ import java.util.Set;
 
 @Entity
 @Table(schema = "registry_security", name = "USERS_TMP")
-public class User {
-
-    @Id
-    @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class User extends BaseEntity{
 
     @Column(name = "USER_NAME", columnDefinition = "VARCHAR(50) NOT NULL UNIQUE")
     private String userName;
@@ -41,14 +36,6 @@ public class User {
     private Status status;
 
     public User() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getUserName() {

@@ -7,12 +7,7 @@ import java.util.Set;
 
 @Entity
 @Table(schema = "registry_security", name = "PERMISSIONS_TMP")
-public class Permission {
-
-    @Id
-    @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Permission extends BaseEntity {
 
     @Column(name = "PERMISSION_NAME", columnDefinition = "VARCHAR(20) UNIQUE NOT NULL")
     private String permissionName;
@@ -21,18 +16,6 @@ public class Permission {
     private Set<Role> listOfRoles = new HashSet<>();
 
     public Permission() {
-    }
-
-    public Permission(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getPermissionName() {

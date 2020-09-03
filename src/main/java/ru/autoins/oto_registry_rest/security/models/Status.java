@@ -5,12 +5,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(schema = "registry_security", name = "STATUS_TMP")
-public class Status {
+public class Status extends BaseEntity {
 
-    @Id
-    @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @Column(name = "STATUS_NAME", columnDefinition = "VARCHAR(10) NOT NULL DEFAULT 'ACTIVE'")
     private String statusName;
@@ -19,15 +15,7 @@ public class Status {
     }
 
     public Status(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+        this.setId(id);
     }
 
     public String getStatusName() {
